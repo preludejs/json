@@ -2,7 +2,7 @@
   "private": true,
   "name": "@prelude/json",
   "version": "0.0.0",
-  "description": "? module.",
+  "description": "Json module.",
   "type": "module",
   "main": "./cjs/index.js",
   "directories": {

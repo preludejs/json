@@ -8,18 +8,7 @@ const known = [
   '-0'
 ]
 
-export const decode: Decoder.Decode<number> =
-  value => {
-    if (typeof value !== 'string') {
-      throw new Error(`Expected string, got ${typeof value}.`)
-    }
-    if (!known.includes(value)) {
-      throw new Error(`Expected Infinity, -Infinity, Nan or -0 value, got ${value}.`)
-    }
-    return Number(value)
-  }
-
-export const encode: Encoder.Encode<number, number> =
+export const encode: Encoder.Encode<number, 'number'> =
   value => {
     if (Number.isNaN(value)) {
       return { ['^number$']: 'NaN' }
@@ -34,4 +23,15 @@ export const encode: Encoder.Encode<number, number> =
       return { ['^number$']: '-0' }
     }
     return value
+  }
+
+export const decode: Decoder.Decode<number> =
+  value => {
+    if (typeof value !== 'string') {
+      throw new Error(`Expected string, got ${typeof value}.`)
+    }
+    if (!known.includes(value)) {
+      throw new Error(`Expected Infinity, -Infinity, Nan or -0 value, got ${value}.`)
+    }
+    return Number(value)
   }

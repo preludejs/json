@@ -1,7 +1,7 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode =
+export const encode: Encoder.Encode<unknown, 'Json'> =
   (value, encoder) =>
     ({ ['^Json$']: JSON.stringify(Encoder.encode(value, encoder)) })
 

@@ -1,10 +1,9 @@
 import type * as Encoder from '../encoder.js'
 import type * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Date> =
+export const encode: Encoder.Encode<Date, 'Date'> =
   value =>
     ({ '^Date$': value.toISOString() })
-
 
 export const decode: Decoder.Decode<Date> =
   value => {

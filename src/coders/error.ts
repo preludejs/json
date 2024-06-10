@@ -2,7 +2,7 @@ import * as $ from '@prelude/refute'
 import * as Encoder from '../encoder.js'
 import type * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Error> =
+export const encode: Encoder.Encode<Error, 'Error'> =
   (value, encoder) => {
     const { name, message, cause } = value
     if (value instanceof AggregateError) {

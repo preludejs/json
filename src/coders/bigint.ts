@@ -1,7 +1,7 @@
 import type * as Encoder from '../encoder.js'
 import type * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<bigint> =
+export const encode: Encoder.Encode<bigint, 'bigint'> =
   value =>
     ({ '^bigint$': value.toString() })
 

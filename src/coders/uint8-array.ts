@@ -1,7 +1,7 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Uint8Array> =
+export const encode: Encoder.Encode<Uint8Array, 'Uint8Array'> =
   value =>
     ({ '^Uint8Array$': btoa(String.fromCharCode(...value)) })
 

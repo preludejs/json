@@ -8,7 +8,7 @@ const refute =
     flags: $.string
   })
 
-export const encode: Encoder.Encode<RegExp> =
+export const encode: Encoder.Encode<RegExp, 'RegExp'> =
   ({ source, flags }: RegExp) =>
     ({ '^RegExp$': { source, flags } })
 

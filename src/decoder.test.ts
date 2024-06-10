@@ -1,5 +1,19 @@
 import * as Json from './index.js'
 
+test('^Undefined$', () => {
+
+  expect(Json.parse(JSON.stringify({
+    '^Undefined$': true
+  }))).toBeUndefined()
+
+  expect(Json.parse(JSON.stringify({
+    'foo^Undefined$': true
+  }))).toEqual({
+    foo: undefined
+  })
+
+})
+
 test('^Json$', () => {
 
   expect(Json.parse(JSON.stringify({
@@ -66,7 +80,7 @@ test('^Map$', () => {
 
 })
 
-test.only('nested', () => {
+test('nested', () => {
   expect(Json.parse('{"foo^Set$":[1,2,3]}')).toEqual({ foo: new Set([ 1, 2, 3 ]) })
   expect(Json.parse('{"^Map$":{"foo^Set$":[1,2,3]}}')).toEqual(new Map([ [ 'foo', new Set([ 1, 2, 3 ]) ] ]))
   expect(Json.parse('{"foo":{"^Set$":[1,2,3]}}')).toEqual({ foo: new Set([ 1, 2, 3 ]) })
