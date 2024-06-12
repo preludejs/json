@@ -11,16 +11,16 @@ const known = [
 export const encode: Encoder.Encode<number, 'number'> =
   value => {
     if (Number.isNaN(value)) {
-      return { ['^number$']: 'NaN' }
+      return { ['^Number$']: 'NaN' }
     }
     if (value === Infinity) {
-      return { ['^number$']: 'Infinity' }
+      return { ['^Number$']: 'Infinity' }
     }
     if (value === -Infinity) {
-      return { ['^number$']: '-Infinity' }
+      return { ['^Number$']: '-Infinity' }
     }
     if (Object.is(value, -0)) {
-      return { ['^number$']: '-0' }
+      return { ['^Number$']: '-0' }
     }
     return value
   }

@@ -3,7 +3,7 @@ import { decode as decodeObject } from './coders/object.js'
 
 export type Decode<T = unknown> =
   // eslint-disable-next-line no-use-before-define
-  (value: any, decoder: t) =>
+  (value: unknown, decoder: t) =>
     null | T
 
 export type t = {
@@ -18,7 +18,7 @@ export function decode(mutable: unknown, decoder: t) {
   if (mutable === null) {
     return mutable
   }
-  if (mutable.constructor === Array) {
+  if (Object.getPrototypeOf(mutable).constructor === Array) {
     return decodeArray(mutable, decoder)
   }
   return decodeObject(mutable, decoder)

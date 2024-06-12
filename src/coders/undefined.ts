@@ -1,6 +1,10 @@
 import type * as Encoder from '../encoder.js'
 import type * as Decoder from '../decoder.js'
 
+export const constructor =
+  () =>
+    undefined
+
 export const encode: Encoder.Encode<undefined, 'Undefined'> =
   () =>
     ({ '^Undefined$': true })

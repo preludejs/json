@@ -24,4 +24,5 @@ test('non json serializable', () => {
   t(new Set([ new Map([ [ 'foo', 'bar' ], [ 'baz', 'qux' ] ]) ]))
   t(new Map([ [ 'foo', new Set([ 1, 2, 3 ]) ] ]))
   t(new Uint8Array([ 1, 2, 3 ]))
+  t([ undefined, null, NaN, Infinity, -Infinity, -0, 0 ])
 })

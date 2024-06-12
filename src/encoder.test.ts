@@ -18,12 +18,30 @@ test('Map', () => {
 
 test('number', () => {
   expect(Json.stringify(4.2)).toBe('4.2')
-  expect(Json.stringify(NaN)).toBe('{"^number$":"NaN"}')
-  expect(Json.stringify(Infinity)).toBe('{"^number$":"Infinity"}')
-  expect(Json.stringify(-Infinity)).toBe('{"^number$":"-Infinity"}')
-  expect(Json.stringify(-0)).toBe('{"^number$":"-0"}')
+  expect(Json.stringify(NaN)).toBe('{"^Number$":"NaN"}')
+  expect(Json.stringify(Infinity)).toBe('{"^Number$":"Infinity"}')
+  expect(Json.stringify(-Infinity)).toBe('{"^Number$":"-Infinity"}')
+  expect(Json.stringify(-0)).toBe('{"^Number$":"-0"}')
 })
 
 test('nested', () => {
   expect(Json.stringify(new Map([ [ 'foo', new Set([ 1, 2, 3 ]) ] ]))).toBe('{"^Map$":{"foo":{"^Set$":[1,2,3]}}}')
+})
+
+test('Undefined', () => {
+  expect(Json.stringify(undefined)).toBe('{"^Undefined$":true}')
+  expect(Json.stringify({ foo: undefined })).toBe('{"foo":{"^Undefined$":true}}')
+  expect(Json.stringify([ null, undefined, NaN ])).toBe('[null,{"^Undefined$":true},{"^Number$":"NaN"}]')
+})
+
+test('weirdos', () => {
+  expect(Json.stringify([
+    undefined,
+    null,
+    NaN,
+    Infinity,
+    -Infinity,
+    -0,
+    0
+  ])).toBe('[{"^Undefined$":true},null,{"^Number$":"NaN"},{"^Number$":"Infinity"},{"^Number$":"-Infinity"},{"^Number$":"-0"},0]')
 })
