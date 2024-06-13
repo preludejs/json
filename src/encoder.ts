@@ -1,4 +1,4 @@
-import * as Undefined from './coders/undefined.js'
+import * as Constructor from './constructor.js'
 
 export type Encode<T, U extends string> =
 
@@ -16,13 +16,7 @@ export type t = {
 }
 
 export function encode(value: unknown, encoder: t) {
-  if (value === null) {
-    return value
-  }
-  const constructor =
-    typeof value === 'undefined' ?
-      Undefined.constructor :
-      Object.getPrototypeOf(value).constructor
+  const constructor = Constructor.of(value)
   const encodeValue = encoder.encoders.get(constructor)
   return encodeValue ?
     encodeValue(value, encoder) :

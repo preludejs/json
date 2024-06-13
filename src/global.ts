@@ -1,5 +1,6 @@
-import * as Coder from './coder.js'
 import * as Codecs from './coders.js'
+import * as Coder from './coder.js'
+import * as Constructor from './constructor.js'
 
 export const global: Coder.t = {
   legacyDecoder: true,
@@ -18,7 +19,7 @@ global.decoders.set('Set', Codecs.Set.decode)
 global.decoders.set('Uint8Array', Codecs.Uint8Array.decode)
 global.decoders.set('Undefined', Codecs.Undefined.decode)
 
-global.encoders.set(Codecs.Undefined.constructor, Codecs.Undefined.encode)
+global.encoders.set(Constructor.Undefined, Codecs.Undefined.encode)
 global.encoders.set(Array, Codecs.Array.encode)
 global.encoders.set(BigInt, Codecs.BigInt.encode)
 global.encoders.set(Date, Codecs.Date.encode)
