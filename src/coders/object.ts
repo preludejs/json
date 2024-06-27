@@ -57,8 +57,24 @@ export const decode: Decoder.Decode<object> =
       if (lastChar !== '$') {
 
         // Legacy Json suffix.
-        // if (lastChar === 'n' && inputKey.endsWith('Json')) {
-        // }
+        if (decoder.legacyDecoder && lastChar === 'n' && inputKey.endsWith('Json')) {
+
+          // Map legacy key and index to new format.
+          const fakeKey = inputKey.slice(0, -4) + '^Json$'
+          const fakeIndex = inputKey.length - 4
+
+          // Replacement.
+          ;[ key, value ] = unwind(decoder, fakeKey, fakeIndex, (mutableInput as object)[inputKey])
+          if (key in (mutableInput as object)) {
+            throw new Error(`Expected output key ${key} not to exist on input when decoding input key ${inputKey}.`)
+          }
+
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+          delete (mutableInput as object)[inputKey]
+          ;(mutableInput as object)[key] = value
+
+          continue
+        }
 
         key = inputKey
         ;(mutableInput as object)[key] = Decoder.decode((mutableInput as object)[inputKey], decoder)

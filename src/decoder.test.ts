@@ -30,6 +30,19 @@ test('^Json$', () => {
 
 })
 
+test('Json (legacy)', () => {
+  expect(Json.parse(JSON.stringify({
+    'Json': JSON.stringify({ bar: 'baz' })
+  }))).toEqual({
+    bar: 'baz'
+  })
+  expect(Json.parse(JSON.stringify({
+    'fooJson': JSON.stringify({ bar: 'baz' })
+  }))).toEqual({
+    foo: { bar: 'baz' }
+  })
+})
+
 test('^RegExp$', () => {
 
   expect(Json.parse(JSON.stringify({
