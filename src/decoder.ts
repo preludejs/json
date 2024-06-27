@@ -18,7 +18,8 @@ export function decode(mutable: unknown, decoder: t) {
   if (mutable === null) {
     return mutable
   }
-  if (Object.getPrototypeOf(mutable).constructor === Array) {
+  const prototype = Object.getPrototypeOf(mutable) ?? Object.prototype
+  if (prototype.constructor === Array) {
     return decodeArray(mutable, decoder)
   }
   return decodeObject(mutable, decoder)
