@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest --coverage",
+    "test": "eslint src && jest --coverage",
     "preversion": "make preversion",
     "postversion": "make postversion"
   },

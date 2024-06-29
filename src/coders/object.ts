@@ -17,7 +17,8 @@ export const encode: Encoder.Encode<object, 'object'> =
     return output
   }
 
-const unwind =
+/** Decodes key-value pair recursively. */
+const decodeProperty =
   (decoder: Decoder.t, key: string, index: number, value: unknown): [string, unknown] => {
     let k = key
     let v = value
@@ -43,6 +44,20 @@ const unwind =
     return [ k, v ]
   }
 
+const replaceProperty =
+  (mutableInput: object, oldKey: string, newKey: string, value: unknown) => {
+
+    // Sanity check.
+    if (newKey in mutableInput) {
+      throw new Error(`Expected decoded property ${newKey} not to exist on object when trying to decode property ${oldKey}.`)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete mutableInput[oldKey]
+
+    mutableInput[newKey] = value
+  }
+
 export const decode: Decoder.Decode<object> =
   (mutableInput, decoder) => {
     let count = 0
@@ -64,14 +79,8 @@ export const decode: Decoder.Decode<object> =
           const fakeIndex = inputKey.length - 4
 
           // Replacement.
-          ;[ key, value ] = unwind(decoder, fakeKey, fakeIndex, (mutableInput as object)[inputKey])
-          if (key in (mutableInput as object)) {
-            throw new Error(`Expected output key ${key} not to exist on input when decoding input key ${inputKey}.`)
-          }
-
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-          delete (mutableInput as object)[inputKey]
-          ;(mutableInput as object)[key] = value
+          ;[ key, value ] = decodeProperty(decoder, fakeKey, fakeIndex, (mutableInput as object)[inputKey])
+          replaceProperty(mutableInput as object, inputKey, key, value)
 
           continue
         }
@@ -90,14 +99,8 @@ export const decode: Decoder.Decode<object> =
       }
 
       // Replacement.
-      [ key, value ] = unwind(decoder, inputKey, index, (mutableInput as object)[inputKey])
-      if (key in (mutableInput as object)) {
-        throw new Error(`Expected output key ${key} not to exist on input when decoding input key ${inputKey}.`)
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete (mutableInput as object)[inputKey]
-      ;(mutableInput as object)[key] = value
+      ;[ key, value ] = decodeProperty(decoder, inputKey, index, (mutableInput as object)[inputKey])
+      replaceProperty(mutableInput as object, inputKey, key, value)
 
     }
 
