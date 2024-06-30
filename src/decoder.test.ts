@@ -1,18 +1,87 @@
 import * as Json from './index.js'
 
-test('^Undefined$', () => {
+describe('custom coder with Undefined, Number and legacy decoder', () => {
 
-  expect(Json.parse(JSON.stringify({
-    '^Undefined$': true
-  }))).toBeUndefined()
+  const custom = Json.of({
+    ...Json.global,
+    legacyDecoder: true
+  })
+  Json.register(custom, Json.Codecs.Undefined)
+  Json.register(custom, Json.Codecs.Number)
 
-  expect(Json.parse(JSON.stringify({
-    'foo^Undefined$': true
-  }))).toEqual({
-    foo: undefined
+  test('^Undefined$', () => {
+
+    expect(custom.parse(JSON.stringify({
+      '^Undefined$': true
+    }))).toBeUndefined()
+
+    expect(custom.parse(JSON.stringify({
+      'foo^Undefined$': true
+    }))).toEqual({
+      foo: undefined
+    })
+
+  })
+
+  test('Number', () => {
+
+    expect(custom.parse(JSON.stringify({
+      '^Number$': 'NaN'
+    }))).toBeNaN()
+
+    expect(custom.parse(JSON.stringify({
+      'foo^Number$': 'NaN'
+    }))).toEqual({
+      foo: NaN
+    })
+
+    expect(custom.parse(JSON.stringify({
+      '^Number$': 'Infinity'
+    }))).toBe(Infinity)
+
+    expect(custom.parse(JSON.stringify({
+      'foo^Number$': 'Infinity'
+    }))).toEqual({
+      foo: Infinity
+    })
+
+    expect(custom.parse(JSON.stringify({
+      '^Number$': '-Infinity'
+    }))).toBe(-Infinity)
+
+    expect(custom.parse(JSON.stringify({
+      'foo^Number$': '-Infinity'
+    }))).toEqual({
+      foo: -Infinity
+    })
+
+    expect(custom.parse(JSON.stringify({
+      '^Number$': '-0'
+    }))).toBe(-0)
+
+    expect(custom.parse(JSON.stringify({
+      'foo^Number$': '-0'
+    }))).toEqual({
+      foo: -0
+    })
+
+  })
+
+  test('Json (legacy)', () => {
+    expect(custom.parse(JSON.stringify({
+      'Json': JSON.stringify({ bar: 'baz' })
+    }))).toEqual({
+      bar: 'baz'
+    })
+    expect(custom.parse(JSON.stringify({
+      'fooJson': JSON.stringify({ bar: 'baz' })
+    }))).toEqual({
+      foo: { bar: 'baz' }
+    })
   })
 
 })
+
 
 test('^Json$', () => {
 
@@ -28,19 +97,6 @@ test('^Json$', () => {
     foo: { bar: 'baz' }
   })
 
-})
-
-test('Json (legacy)', () => {
-  expect(Json.parse(JSON.stringify({
-    'Json': JSON.stringify({ bar: 'baz' })
-  }))).toEqual({
-    bar: 'baz'
-  })
-  expect(Json.parse(JSON.stringify({
-    'fooJson': JSON.stringify({ bar: 'baz' })
-  }))).toEqual({
-    foo: { bar: 'baz' }
-  })
 })
 
 test('^RegExp$', () => {

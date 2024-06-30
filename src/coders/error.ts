@@ -1,15 +1,20 @@
 import * as $ from '@prelude/refute'
 import * as Encoder from '../encoder.js'
-import type * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Error, 'Error'> =
-  (value, encoder) => {
-    const { name, message, cause } = value
+export type t = Error
+
+export const constructor = Error
+
+export const name = 'Error'
+
+export const encode =
+  (value: t, encoder: Encoder.t) => {
+    const { name: name_, message, cause } = value
     if (value instanceof AggregateError) {
       const { errors } = value
       return {
         ['^Error$']: {
-          name,
+          name: name_,
           message,
           errors: errors.map(error => Encoder.encode(error, encoder)),
           cause
@@ -18,15 +23,15 @@ export const encode: Encoder.Encode<Error, 'Error'> =
     }
     return {
       ['^Error$']: {
-        name,
+        name: name_,
         message,
         cause
       }
     }
   }
 
-export const decode: Decoder.Decode<Error> =
-  value => {
+export const decode =
+  (value: unknown): t => {
     const refute = $.object({
       name: $.string,
       message: $.string,
@@ -36,8 +41,8 @@ export const decode: Decoder.Decode<Error> =
     if ($.failed(refute)) {
       throw new Error($.reasonWithoutReceived(refute))
     }
-    const { name, message, cause, errors } = refute.value
-    switch (name) {
+    const { name: name_, message, cause, errors } = refute.value
+    switch (name_) {
       case 'AggregateError':
         return new AggregateError(errors ?? [], message, { cause })
       case 'EvalError':
@@ -55,7 +60,7 @@ export const decode: Decoder.Decode<Error> =
       default:
         return Object.assign(
           new Error(message, { cause }),
-          { name, errors }
+          { name: name_, errors }
         )
     }
   }

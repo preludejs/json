@@ -1,8 +1,15 @@
 import * as Json from './index.js'
 
+const custom = Json.of({
+  ...Json.global,
+  legacyDecoder: true
+})
+Json.register(custom, Json.Codecs.Undefined)
+Json.register(custom, Json.Codecs.Number)
+
 const t =
   (value: unknown) =>
-    expect(Json.parse(Json.stringify(value))).toEqual(value)
+    expect(custom.parse(custom.stringify(value))).toEqual(value)
 
 test('basic', () => {
   t(1)

@@ -1,12 +1,18 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Set<unknown>, 'Set'> =
-  (value, encoder) =>
+export type t = Set<unknown>
+
+export const constructor = Set
+
+export const name = 'Set'
+
+export const encode =
+  (value: t, encoder: Encoder.t) =>
     ({ ['^Set$']: Encoder.encode(Array.from(value), encoder) })
 
-export const decode: Decoder.Decode<Set<unknown>> =
-  (value, decoder) => {
+export const decode =
+  (value: unknown, decoder: Decoder.t): t => {
     if (!Array.isArray(value)) {
       throw new Error('Expected array.')
     }

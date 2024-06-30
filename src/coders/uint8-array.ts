@@ -1,12 +1,18 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Uint8Array, 'Uint8Array'> =
-  value =>
+export type t = Uint8Array
+
+export const constructor = Uint8Array
+
+export const name = 'Uint8Array'
+
+export const encode =
+  (value: Uint8Array, _encoder: Encoder.t) =>
     ({ '^Uint8Array$': btoa(String.fromCharCode(...value)) })
 
-export const decode: Decoder.Decode<Uint8Array> =
-  value => {
+export const decode =
+  (value: unknown, _decoder: Decoder.t): t => {
     if (typeof value !== 'string') {
       throw new Error(`Expected string, got ${typeof value}.`)
     }

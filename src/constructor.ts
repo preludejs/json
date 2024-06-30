@@ -1,10 +1,18 @@
-export const Null =
-  () =>
-    null
+export const Null = {
+  name: 'Null'
+} as const
 
-export const Undefined =
-  () =>
-    undefined
+export const Undefined = {
+  name: 'Undefined'
+} as const
+
+export const NullPrototype = {
+  name: 'NullPrototype'
+} as const
+
+export const NullishConstructor = {
+  name: 'NullishConstructor'
+} as const
 
 export const of =
   (value: unknown) => {
@@ -14,5 +22,9 @@ export const of =
     if (value === undefined) {
       return Undefined
     }
-    return Object.getPrototypeOf(value).constructor
+    const prototype = Object.getPrototypeOf(value)
+    if (prototype == null) {
+      return NullPrototype
+    }
+    return prototype.constructor ?? NullishConstructor
   }

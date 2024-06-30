@@ -1,12 +1,13 @@
-import type * as Encoder from '../encoder.js'
-import type * as Decoder from '../decoder.js'
+export type t = Date
+export const constructor = Date
+export const name = 'Date'
 
-export const encode: Encoder.Encode<Date, 'Date'> =
-  value =>
+export const encode =
+  (value: t) =>
     ({ '^Date$': value.toISOString() })
 
-export const decode: Decoder.Decode<Date> =
-  value => {
+export const decode =
+  (value: unknown): t => {
     if (typeof value !== 'string') {
       throw new Error(`Expected string, got ${typeof value}.`)
     }

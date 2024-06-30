@@ -1,19 +1,13 @@
 import * as Constructor from './constructor.js'
 
-export type Encode<T, U extends string> =
-
-  // eslint-disable-next-line no-use-before-define
-  (value: T, encoder: t) =>
-    | Record<`^${U}$`, unknown>
-    | T
-    | unknown
-
 export type t = {
-
-  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
-  encoders: WeakMap<Function, Encode<any, string>>
-
+  encoders: Map<{ name: string }, (value: unknown, encoder: t) => unknown>
+  stringify: (value: unknown, replacer?: (this: unknown, key: string, value_: unknown) => unknown, space?: number | string) => string
 }
+
+export type Encode<T = unknown> =
+  (value: T, encoder: t) =>
+    unknown
 
 export function encode(value: unknown, encoder: t) {
   const constructor = Constructor.of(value)

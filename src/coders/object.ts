@@ -1,12 +1,22 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<object, 'object'> =
-  (input, encoder) => {
+export type t = unknown
+
+export const constructor = Object
+
+export const name = null
+
+export const encode =
+  (input: t, encoder: Encoder.t) => {
+    if (typeof input !== 'object' || input === null) {
+      throw new Error(`Expected object, got ${typeof input}.`)
+    }
     let output: object = input
     for (const key in input) {
-      const value = Encoder.encode(input[key], encoder)
-      if (input[key] === value) {
+      const inputValue = input[key]
+      const value = Encoder.encode(inputValue, encoder)
+      if (inputValue === value) {
         continue
       }
       if (output === input) {
@@ -58,8 +68,8 @@ const replaceProperty =
     mutableInput[newKey] = value
   }
 
-export const decode: Decoder.Decode<object> =
-  (mutableInput, decoder) => {
+export const decode =
+  (mutableInput: unknown, decoder: Decoder.t): t => {
     let count = 0
     let key: null | string = null
     let value: unknown = null

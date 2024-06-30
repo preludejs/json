@@ -8,10 +8,11 @@ export type Decode<T = unknown> =
 
 export type t = {
   legacyDecoder: boolean
-  decoders: Map<string, Decode>
+  decoders: Map<string, Decode>,
+  parse: (value: string, reviver?: (this: unknown, key: string, value_: unknown) => unknown) => unknown
 }
 
-export function decode(mutable: unknown, decoder: t) {
+export function decode(mutable: unknown, decoder: t): unknown {
   if (typeof mutable !== 'object') {
     return mutable
   }

@@ -1,15 +1,18 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<Map<unknown, unknown>, 'Map'> =
-  (value, encoder) =>
+export type t = Map<unknown, unknown>
+
+export const constructor = Map
+
+export const name = 'Map'
+
+export const encode =
+  (value: t, encoder: Encoder.t) =>
     ({ ['^Map$']: Encoder.encode(Object.fromEntries(value), encoder) })
 
-export const decode: Decoder.Decode<Map<unknown, unknown>> =
-  (value, decoder) => {
-    if (value === null) {
-      return null
-    }
+export const decode =
+  (value: unknown, decoder: Decoder.t): t => {
     if (typeof value !== 'object') {
       throw new Error(`Expected object, got ${typeof value}.`)
     }

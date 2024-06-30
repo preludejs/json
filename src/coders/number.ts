@@ -1,6 +1,12 @@
 import type * as Encoder from '../encoder.js'
 import type * as Decoder from '../decoder.js'
 
+export type t = number
+
+export const constructor = Number
+
+export const name = 'Number'
+
 const known = [
   'Infinity',
   '-Infinity',
@@ -8,8 +14,8 @@ const known = [
   '-0'
 ]
 
-export const encode: Encoder.Encode<number, 'number'> =
-  value => {
+export const encode =
+  (value: number, _encoder: Encoder.t) => {
     if (Number.isNaN(value)) {
       return { ['^Number$']: 'NaN' }
     }
@@ -25,8 +31,8 @@ export const encode: Encoder.Encode<number, 'number'> =
     return value
   }
 
-export const decode: Decoder.Decode<number> =
-  value => {
+export const decode =
+  (value: unknown, _decoder: Decoder.t): t => {
     if (typeof value !== 'string') {
       throw new Error(`Expected string, got ${typeof value}.`)
     }

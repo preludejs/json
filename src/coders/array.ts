@@ -1,12 +1,18 @@
 import * as Encoder from '../encoder.js'
 import * as Decoder from '../decoder.js'
 
-export const encode: Encoder.Encode<unknown[], 'array'> =
-  (input, encoder) => {
+export type t = unknown[]
+export const constructor = Array
+export const name = 'Array'
+
+export const encode =
+  (input: t, encoder: Encoder.t) => {
     let output: unknown[] = input
-    for (let i = 0; i < input.length; i++) {
-      const value = Encoder.encode(input[i], encoder)
-      if (input[i] === value) {
+    const n = input.length
+    for (let i = 0; i < n; i++) {
+      const inputValue = input[i]
+      const value = Encoder.encode(inputValue, encoder)
+      if (inputValue === value) {
         continue
       }
       if (output === input) {
@@ -17,10 +23,14 @@ export const encode: Encoder.Encode<unknown[], 'array'> =
     return output
   }
 
-export const decode: Decoder.Decode<unknown[]> =
-  (mutable, decoder) => {
-    for (let i = 0; i < (mutable as unknown[]).length; i++) {
-      (mutable as unknown[])[i] = Decoder.decode((mutable as unknown[])[i], decoder)
+export const decode =
+  (mutableInput: unknown, decoder: Decoder.t): t => {
+    if (!Array.isArray(mutableInput)) {
+      throw new Error(`Expected array, got ${typeof mutableInput}.`)
     }
-    return mutable as unknown[]
+    const n = mutableInput.length
+    for (let i = 0; i < n; i++) {
+      mutableInput[i] = Decoder.decode(mutableInput[i], decoder)
+    }
+    return mutableInput
   }

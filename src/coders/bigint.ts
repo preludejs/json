@@ -1,12 +1,13 @@
-import type * as Encoder from '../encoder.js'
-import type * as Decoder from '../decoder.js'
+export type t = bigint
+export const constructor = BigInt
+export const name = 'BigInt'
 
-export const encode: Encoder.Encode<bigint, 'bigint'> =
-  value =>
+export const encode =
+  (value: t) =>
     ({ '^bigint$': value.toString() })
 
-export const decode: Decoder.Decode<bigint> =
-  value => {
+export const decode =
+  (value: unknown): t => {
     if (typeof value !== 'string') {
       throw new Error(`Expected string, got ${typeof value}.`)
     }

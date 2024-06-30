@@ -1,5 +1,12 @@
 import * as Json from './index.js'
 
+const custom = Json.of({
+  ...Json.global,
+  legacyDecoder: true
+})
+Json.register(custom, Json.Codecs.Undefined)
+Json.register(custom, Json.Codecs.Number)
+
 test('bigint', () => {
   expect(Json.stringify(1n)).toBe('{"^bigint$":"1"}')
 })
@@ -18,10 +25,10 @@ test('Map', () => {
 
 test('number', () => {
   expect(Json.stringify(4.2)).toBe('4.2')
-  expect(Json.stringify(NaN)).toBe('{"^Number$":"NaN"}')
-  expect(Json.stringify(Infinity)).toBe('{"^Number$":"Infinity"}')
-  expect(Json.stringify(-Infinity)).toBe('{"^Number$":"-Infinity"}')
-  expect(Json.stringify(-0)).toBe('{"^Number$":"-0"}')
+  expect(custom.stringify(NaN)).toBe('{"^Number$":"NaN"}')
+  expect(custom.stringify(Infinity)).toBe('{"^Number$":"Infinity"}')
+  expect(custom.stringify(-Infinity)).toBe('{"^Number$":"-Infinity"}')
+  expect(custom.stringify(-0)).toBe('{"^Number$":"-0"}')
 })
 
 test('nested', () => {
@@ -29,13 +36,13 @@ test('nested', () => {
 })
 
 test('Undefined', () => {
-  expect(Json.stringify(undefined)).toBe('{"^Undefined$":true}')
-  expect(Json.stringify({ foo: undefined })).toBe('{"foo":{"^Undefined$":true}}')
-  expect(Json.stringify([ null, undefined, NaN ])).toBe('[null,{"^Undefined$":true},{"^Number$":"NaN"}]')
+  expect(custom.stringify(undefined)).toBe('{"^Undefined$":true}')
+  expect(custom.stringify({ foo: undefined })).toBe('{"foo":{"^Undefined$":true}}')
+  expect(custom.stringify([ null, undefined, NaN ])).toBe('[null,{"^Undefined$":true},{"^Number$":"NaN"}]')
 })
 
 test('weirdos', () => {
-  expect(Json.stringify([
+  expect(custom.stringify([
     undefined,
     null,
     NaN,
