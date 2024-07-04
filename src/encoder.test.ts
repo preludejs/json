@@ -16,7 +16,7 @@ test('Date', () => {
 })
 
 test('Error', () => {
-  expect(Json.stringify(new Error('foo'))).toBe('{"^Error$":{"name":"Error","message":"foo"}}')
+  expect(Json.stringify(Object.assign(new Error('foo'), { stack: 'test' }))).toBe('{"^Error$":{"name":"Error","message":"foo","stack":"test"}}')
 })
 
 test('Map', () => {
