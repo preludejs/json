@@ -30,28 +30,29 @@ export const encode =
 /** Decodes key-value pair recursively. */
 const decodeProperty =
   (decoder: Decoder.t, key: string, index: number, value: unknown): [string, unknown] => {
-    let k = key
-    let v = value
-    let i = index
+    let currentKey = key
+    let currentValue = value
+    let currentIndex = index
     while (true) {
-      const type = k.slice(i + 1, -1)
-      const d = decoder.decoders.get(type)
-      if (!d) {
-        throw new Error(`Expected decoder to be registered for type ${type} to decode property ${key}.`)
+      const type = currentKey.slice(currentIndex + 1, -1)
+      const decodeType = decoder.decoders.get(type)
+      if (!decodeType) {
+        throw new Error(`Expected decoder to be registered for ${type} type while trying trying to decode ${key} property.`)
       }
-      const v2 = v !== null ? d(v, decoder) : null
-      const k2 = k.slice(0, i)
-      k = k2
-      v = v2
-      if (k[i - 1] !== '$') {
+
+      // Null is always decoded as null.
+      currentValue = currentValue !== null ? decodeType(currentValue, decoder) : null
+
+      currentKey = currentKey.slice(0, currentIndex)
+      if (currentKey[currentIndex - 1] !== '$') {
         break
       }
-      i = k.lastIndexOf('^')
-      if (i === -1) {
+      currentIndex = currentKey.lastIndexOf('^')
+      if (currentIndex === -1) {
         break
       }
     }
-    return [ k, v ]
+    return [ currentKey, currentValue ]
   }
 
 const replaceProperty =

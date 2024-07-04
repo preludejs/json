@@ -12,7 +12,7 @@ export const encode =
   (_value: t, _encoder: Encoder.t) =>
     ({ '^Undefined$': true })
 
-export const decode: Decoder.Decode<undefined> =
+export const decode =
   (value: unknown, _decoder: Decoder.t): t => {
     if (value !== true) {
       throw new Error(`Expected true, got ${typeof value}.`)
