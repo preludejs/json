@@ -69,7 +69,13 @@ Decoding decodes value and strips suffix.
 Objects with single empty property name are promoted up.
 
 ```json
-{"foo":{"":"bar"}} -> {"foo":"bar"}
+{"foo":{"":"bar"}}
+```
+
+...becomes:
+
+```json
+{"foo":"bar"}
 ```
 
 Encoded types can be arbitrarily nested, ie:
