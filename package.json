@@ -5,11 +5,8 @@
   "description": "Json module.",
   "type": "module",
   "main": "./cjs/index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "tsc --noEmit && eslint src && jest --coverage",
+    "test": "make test",
     "preversion": "make preversion",
     "postversion": "make postversion"
   },
