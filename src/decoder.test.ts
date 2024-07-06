@@ -155,3 +155,10 @@ test('nested', () => {
   expect(Json.parse('{"foo":{"^Set$":[1,2,3]}}')).toEqual({ foo: new Set([ 1, 2, 3 ]) })
   expect(Json.parse('{"^Map$":{"foo":{"^Set$":[1,2,3]}}}')).toEqual(new Map([ [ 'foo', new Set([ 1, 2, 3 ]) ] ]))
 })
+
+test('null is allowed', () => {
+  const names = Json.global.decoders.keys()
+  for (const name of names) {
+    expect(Json.parse(JSON.stringify({ [`^${name}$`]: null }))).toBeNull()
+  }
+})

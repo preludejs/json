@@ -92,6 +92,16 @@ Above example encodes a set with a single date element and is equivalent to:
 
 In general `{"foo":{"^Foo$":{"^Bar$":...}}}` is equivalent to `{"foo^Foo$^Bar$":...}`.
 
+### Nulls
+
+Custom encoding always supports `null` value:
+
+```json
+{"^Set$":null}
+```
+
+...will always decode to `null`.
+
 # Usage
 
 ```bash
