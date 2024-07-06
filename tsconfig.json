@@ -9,6 +9,8 @@
     "noEmit": true
   },
   "include": [
-    "src"
+    "eslint.config.mjs",
+    "src",
+    "wip"
   ]
 }

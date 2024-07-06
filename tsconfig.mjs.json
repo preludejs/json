@@ -5,5 +5,8 @@
     "noEmit": false,
     "declaration": true,
     "sourceMap": true
-  }
+  },
+  "include": [
+    "src"
+  ]
 }

@@ -1,5 +1,1 @@
-import config from '@prelude/eslint-config'
-
-export default [
-  ...config
-]
+export { default } from '@prelude/eslint-config'
